@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ -e $1-cache ]; then
+        if [[ $(diff $1 $1-cache) == "" ]]; then
+                echo -e '\033[0;31mRUN CACHED BINARY\033[0m'
+                ./`basename $1 .go`
+        else
+                go build $1 && cp $1 $1-cache && ./`basename $1 .go`
+        fi
+else
+        go build $1 && cp $1 $1-cache && ./`basename $1 .go`
+fi
