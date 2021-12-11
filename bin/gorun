@@ -3,10 +3,10 @@
 if [ -e $1-cache ]; then
         if [[ $(diff $1 $1-cache) == "" ]]; then
                 echo -e '\033[0;31mRUN CACHED BINARY\033[0m'
-                ./`basename $1 .go`
+                ./$1-bin ${@:2}
         else
-                go build $1 && cp $1 $1-cache && ./`basename $1 .go`
+                go build -o $1-bin $1 && cp $1 $1-cache && ./$1-bin ${@:2}
         fi
 else
-        go build $1 && cp $1 $1-cache && ./`basename $1 .go`
+        go build -o $1-bin $1 && cp $1 $1-cache && ./$1-bin ${@:2}
 fi
