@@ -1,10 +1,10 @@
 #!/bin/bash
 
 gorun_status=`git ls-files -m`
+gorun_git_rootdir=`git rev-parse --show-toplevel`
 
 if [ ! -z $gorun_status ]; then
-	echo building
-	go build -o gorun_test && git add $gorun_status
+	go build -o $gorun_git_rootdir/gorun_test $gorun_git_rootdir && git add $gorun_status
 fi
 
-./gorun_test ${@:1}
+$gorun_git_rootdir/gorun_test ${@:1}
