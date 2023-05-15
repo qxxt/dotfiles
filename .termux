@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Assign $ROOT to Termux's usr folder
+export ROOT="/data/data/com.termux/files/usr"
+
+# Keeps Termux from closing randomly
+function Termuxwakelock() {
+    if [[ ! `termux-notification-list` =~ 'wake lock held' ]]; then
+	termux-wake-lock
+    fi
+}
+Termuxwakelock >/dev/null 2>&1 &
