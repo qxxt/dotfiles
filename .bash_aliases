@@ -11,3 +11,5 @@ alias lt='ls -AsS1'
 # Copy with progress bar
 alias cpv='rsync -ah --info=progress2'
 
+# Go tour
+alias tour="tour -openbrowser=f"
