@@ -13,3 +13,6 @@ alias cpv='rsync -ah --info=progress2'
 
 # Go tour
 alias tour="tour -openbrowser=f"
+
+# Emacs
+alias emacs="emacs --maximized"

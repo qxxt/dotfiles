@@ -144,4 +144,4 @@ export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
 
 # PATH
-export PATH="$PATH:$GOBIN"
+export PATH="$PATH:$GOBIN:$HOME/.local/bin"
