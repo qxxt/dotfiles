@@ -142,6 +142,11 @@ fi
 # Go env
 export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
+GOROOT=`realpath $(go env GOROOT)/api`
+export GOROOT=${GOROOT%/api}
 
 # PATH
 export PATH="$PATH:$GOBIN:$HOME/.local/bin"
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
