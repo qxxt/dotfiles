@@ -133,6 +133,21 @@ mkcdir ()
        cd -P -- "$1"
 }
 
+go-scratch () {
+    scratch_dir="$HOME/projekt/go-scratch"
+    mkdir -p -- "$scratch_dir/$1" &&
+        cd -P -- "$scratch_dir/$1" &&
+        go mod init scratch  &&
+        echo -e "package main\n\nfunc main() {\n}" >> "$scratch_dir/$1/main.go"
+}
+
+c-scratch () {
+    scratch_dir="$HOME/projekt/c-scratch"
+    mkdir -p -- "$scratch_dir/$1" &&
+        cd -P -- "$scratch_dir/$1" &&
+        echo -e "int main() {\n\treturn 0;\n}" >> "$scratch_dir/$1/main.c"
+}
+
 # Termux
 if [[ -n "$TERMUX_VERSION" ]]; then
     ISTERMUX=true
@@ -142,11 +157,11 @@ fi
 # Go env
 export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
-GOROOT=`realpath $(go env GOROOT)/api`
-export GOROOT=${GOROOT%/api}
+# GOROOT=`realpath $(go env GOROOT)/api`
+# export GOROOT=${GOROOT%/api}
 
 # PATH
-export PATH="$PATH:$GOBIN:$HOME/.local/bin"
+export PATH="$PATH:$GOBIN:$HOME/bin"
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
