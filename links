@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+link_file() {
+	ln -s $(pwd)/$1 $HOME/$1 || (prompt delete the destination $HOME/$1 and link? && rm $HOME/$1 && link_file $1)
+}
+
+files_to_link=(
+	".bashrc"
+	".bash_aliases"
+	".gemrc"
+	".emacs.d/init.el"
+	".emacs.d/early-init.el"
+	"bin/prompt"
+)
+
+for f in "${files_to_link[@]}"; do
+   link_file "$f"
+done
