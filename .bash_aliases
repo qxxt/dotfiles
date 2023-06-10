@@ -13,6 +13,9 @@ alias cpv='rsync -ah --info=progress2'
 
 # Go tour
 alias tour="tour -openbrowser=f"
+alias godoc="GOROOT=/usr/local/go godoc"
 
 # Emacs
 alias emacs="emacs --maximized"
+
+alias reboot="prompt reboot now? && reboot"

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+echo -n $@ "(y or yes confirm): "
+read "x"
+[[ $x == 'y' || $x == 'yes' ]] && exit 0 || exit 1
