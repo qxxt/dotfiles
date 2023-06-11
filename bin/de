@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+usage() {
+    echo "Decrypt aes-256-cbc from file"
+    echo "Usage: de [file]"
+}
+
+if [[ -n $2 ]]; then
+    echo "Error: Only need 1 parameters"
+    usage
+    exit
+elif [[ -z $1 ]]; then
+    echo "Error: Need at least 1 parameters"
+    usage
+    exit
+fi
+
+echo -n $(openssl aes-256-cbc -d -a --pbkdf2 --in $1) | xclip -selection c -l 2

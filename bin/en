@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+usage() {
+    echo "Encrypt text to aes-256-cbc and save it to file"
+    echo "Usage: en [text] [file]"
+}
+
+if [[ -n $3 ]]; then
+    echo "Error: Only need 2 parameters"
+    usage
+    exit
+elif [[ -z $2 ]]; then
+    echo "Error: Need at least 2 parameters"
+    usage
+    exit
+fi
+
+echo $1 | openssl aes-256-cbc -a -salt --pbkdf2 --out $2
