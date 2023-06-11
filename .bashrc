@@ -32,7 +32,7 @@ fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-    xterm-color) color_prompt=yes;;
+xterm-color) color_prompt=yes ;;
 esac
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
@@ -42,12 +42,12 @@ esac
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-    # We have color support; assume it's compliant with Ecma-48
-    # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-    # a case would tend to support setf rather than setaf.)
-    color_prompt=yes
+        # We have color support; assume it's compliant with Ecma-48
+        # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+        # a case would tend to support setf rather than setaf.)
+        color_prompt=yes
     else
-    color_prompt=
+        color_prompt=
     fi
 fi
 
@@ -115,37 +115,20 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 
 # Add sbin directories to PATH.  This is useful on systems that have sudo
-echo $PATH | grep -Eq "(^|:)/sbin(:|)"     || PATH=$PATH:/sbin
+echo $PATH | grep -Eq "(^|:)/sbin(:|)" || PATH=$PATH:/sbin
 echo $PATH | grep -Eq "(^|:)/usr/sbin(:|)" || PATH=$PATH:/usr/sbin
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
-xterm*|rxvt*)
+xterm* | rxvt*)
     PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
     ;;
-*)
-    ;;
+*) ;;
 esac
 
-mkcdir ()
-{
+mkcdir() {
     mkdir -p -- "$1" &&
-       cd -P -- "$1"
-}
-
-go-scratch () {
-    scratch_dir="$HOME/projekt/go-scratch"
-    mkdir -p -- "$scratch_dir/$1" &&
-        cd -P -- "$scratch_dir/$1" &&
-        go mod init scratch  &&
-        echo -e "package main\n\nfunc main() {\n}" >> "$scratch_dir/$1/main.go"
-}
-
-c-scratch () {
-    scratch_dir="$HOME/projekt/c-scratch"
-    mkdir -p -- "$scratch_dir/$1" &&
-        cd -P -- "$scratch_dir/$1" &&
-        echo -e "int main() {\n\treturn 0;\n}" >> "$scratch_dir/$1/main.c"
+        cd -P -- "$1"
 }
 
 # Termux

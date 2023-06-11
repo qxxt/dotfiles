@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+
+display_help() {
+    echo 'Create a scratch project
+scratch [opt] [dirname]
+
+opt:
+--go     create go scratch
+--c      create c scratch
+--cpp    create c++ scratch'
+}
+
+if [ -z "$1" ]; then
+    display_help
+    exit 0
+fi
+
+check_dir () {
+    if [ -z $2 ]; then
+        echo "error: no dir name specified"
+        return 1
+    elif [ -d $1/$2 ]; then
+        echo "error: dir $1/$2 already exist"
+        return 1
+    fi
+    return 0
+}
+
+go_scratch () {
+    go_scratch_dir="$HOME/scratch/go"
+    check_dir $go_scratch_dir $1 || exit 1
+
+    go_template='package main
+import "fmt"
+
+func main() {
+     fmt.Println("hello world")
+}'
+    mkdir -p -- "$go_scratch_dir/$1" &&
+        cd -P -- "$go_scratch_dir/$1" &&
+        go mod init scratch  &&
+        echo -e $go_template >> "$go_scratch_dir/$1/main.go"
+}
+
+
+
+c_scratch () {
+    c_scratch_dir="$HOME/scratch/c"
+    check_dir $c_scratch_dir $1 || exit 1
+
+    c_template='#include <stdio.h>
+
+int main() {
+    printf("hello world");
+    return 0;
+}'
+
+    mkdir -p -- "$c_scratch_dir/$1" &&
+        cd -P -- "$c_scratch_dir/$1" &&
+        echo -e $c_template >> "$c_scratch_dir/$1/main.c"
+}
+
+cpp_scratch () {
+    cpp_scratch_dir="$HOME/scratch/cpp"
+    check_dir $cpp_scratch_dir $1 || exit 1
+
+    cpp_template='#include <iostream>
+
+int main() {
+    std::cout << "Hello World!";
+    return 0;
+}'
+
+    mkdir -p -- "$cpp_scratch_dir/$1" &&
+        cd -P -- "$cpp_scratch_dir/$1" &&
+        echo -e $cpp_template >> "$cpp_scratch_dir/$1/main.cc"
+}
+
+case $1 in
+  "--go") go_scratch $2;;
+  "--c") c_scratch $2;;
+  "--cpp") cpp_scratch $2;;
+  *) echo "error: unknown option $1";display_help;exit 1;;
+esac
