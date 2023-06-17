@@ -5,14 +5,7 @@ link_file() {
 }
 
 files_to_link=(
-	".bashrc"
-	".bash_aliases"
-	".gemrc"
-	".emacs.d/init.el"
-	".emacs.d/early-init.el"
-	"bin/prompt"
-	"bin/en"
-	"bin/de"
+    ".bashrc"
 )
 
 for f in "${files_to_link[@]}"; do

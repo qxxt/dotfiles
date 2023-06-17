@@ -1,0 +1,17 @@
+[user]
+    name = qxxt
+    email = 57898942+qxxt@users.noreply.github.com
+
+[core]
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    # https://github.com/dandavison/magit-delta/issues/13
+    # line-numbers = true    # Don't do this.. messes up diffs in magit
+    side-by-side = true      # Display a side-by-side diff view instead of the traditional view
+    # navigate = true          # Activate diff navigation: use n to jump forwards and N to jump backwards
+    relative-paths = true    # Output all file paths relative to the current directory
+    hunk-header-style = line-number syntax
