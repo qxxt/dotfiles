@@ -9,9 +9,7 @@
     diffFilter = delta --color-only
 
 [delta]
-    # https://github.com/dandavison/magit-delta/issues/13
-    # line-numbers = true    # Don't do this.. messes up diffs in magit
+    light = true      # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
     side-by-side = true      # Display a side-by-side diff view instead of the traditional view
-    # navigate = true          # Activate diff navigation: use n to jump forwards and N to jump backwards
     relative-paths = true    # Output all file paths relative to the current directory
     hunk-header-style = line-number syntax
