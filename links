@@ -1,13 +1,44 @@
 #!/usr/bin/env bash
 
-link_file() {
-	ln -s $(pwd)/$1 $HOME/$1 || (prompt delete the destination $HOME/$1 and link? && rm $HOME/$1 && link_file $1)
-}
+dotfile_directory=$(realpath $(dirname -- $0))
+target_directory=$HOME
 
 files_to_link=(
     ".bashrc"
+    ".bash_aliases"
+    ".gemrc"
+    ".gitconfig"
+    ".emacs.d/init.el"
+    ".emacs.d/early-init.el"
+    ".emacs.d/lisp"
+    ".emacs.d/snippets"
+    "bin/en"
+    "bin/de"
+    "bin/prompt"
+    "bin/scratch"
 )
 
 for f in "${files_to_link[@]}"; do
-   link_file "$f"
+    src=$dotfile_directory/$f
+    dst=$target_directory/$f
+
+    if [ ! -e "$src" ]; then
+        echo "error: '$src' does not exist"
+        continue
+    fi
+
+    if [ -e "$dst" ]; then
+        if [ `readlink $dst` == "$src" ]; then
+            echo "'$dst' already linked to '$src'"
+            continue
+        elif prompt "force replace '$dst' with '$src'?"; then
+            ln -sf "$src" "$dst"
+            echo "force linked '$src' to '$dst'"
+        fi
+
+        continue
+    fi
+
+    ln -s "$src" "$dst"
+    echo "linked: '$src' to '$dst'"
 done
