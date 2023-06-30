@@ -10,75 +10,59 @@ opt:
 --cpp    create c++ scratch'
 }
 
-if [ -z "$1" ]; then
+if [ -z "$1" ] || [ "$1" == "--help" ]; then
     display_help
     exit 0
 fi
 
-check_dir () {
-    if [ -z $2 ]; then
-        echo "error: no dir name specified"
-        return 1
-    elif [ -d $1/$2 ]; then
-        echo "error: dir $1/$2 already exist"
-        return 1
-    fi
-    return 0
-}
+if [ -z "$2" ]; then
+    echo "error: no dirname"
+    display_help
+    exit 1
+fi
 
-go_scratch () {
-    go_scratch_dir="$HOME/scratch/go"
-    check_dir $go_scratch_dir $1 || exit 1
+go_scratch_dir="$HOME/scratch/go"
+c_scratch_dir="$HOME/scratch/c"
+cpp_scratch_dir="$HOME/scratch/cpp"
+rust_scratch_dir="$HOME/scratch/rust"
+go_template="package main\nimport \"fmt\"\n\nfunc main() {\n     fmt.Println(\"hello world\")\n}"
+c_template='#include <stdio.h>\n\nint main() {\n    printf("hello world");\n    return 0;\n}'
+cpp_template='#include <iostream>\n\nint main() {\n    std::cout << "Hello World!";\n    return 0;\n}'
 
-    go_template='package main
-import "fmt"
-
-func main() {
-     fmt.Println("hello world")
-}'
-    mkdir -p -- "$go_scratch_dir/$1" &&
-        cd -P -- "$go_scratch_dir/$1" &&
-        go mod init scratch  &&
-        echo -e $go_template >> "$go_scratch_dir/$1/main.go"
-}
-
-
-
-c_scratch () {
-    c_scratch_dir="$HOME/scratch/c"
-    check_dir $c_scratch_dir $1 || exit 1
-
-    c_template='#include <stdio.h>
-
-int main() {
-    printf("hello world");
-    return 0;
-}'
-
-    mkdir -p -- "$c_scratch_dir/$1" &&
-        cd -P -- "$c_scratch_dir/$1" &&
-        echo -e $c_template >> "$c_scratch_dir/$1/main.c"
-}
-
-cpp_scratch () {
-    cpp_scratch_dir="$HOME/scratch/cpp"
-    check_dir $cpp_scratch_dir $1 || exit 1
-
-    cpp_template='#include <iostream>
-
-int main() {
-    std::cout << "Hello World!";
-    return 0;
-}'
-
-    mkdir -p -- "$cpp_scratch_dir/$1" &&
-        cd -P -- "$cpp_scratch_dir/$1" &&
-        echo -e $cpp_template >> "$cpp_scratch_dir/$1/main.cc"
-}
+scratch_name=$(echo "$2" | tr '[:upper:]' '[:lower:]' | sed -r 's/[[[:space:]]|\/]/\-/g')
+scratch_dir=""
+scratch_template=""
+scratch_eval=""
+scratch_file=""
 
 case $1 in
-  "--go") go_scratch $2;;
-  "--c") c_scratch $2;;
-  "--cpp") cpp_scratch $2;;
-  *) echo "error: unknown option $1";display_help;exit 1;;
+    "--go")
+        scratch_dir="$go_scratch_dir/$scratch_name"
+        scratch_eval="go mod init '$scratch_name'"
+        scratch_template="$go_template"
+        scratch_file="main.go";;
+    "--c")
+        scratch_dir="$c_scratch_dir/$scratch_name"
+        scratch_template="$c_template"
+        scratch_file="main.c";;
+    "--cpp")
+        scratch_dir="$cpp_scratch_dir/$scratch_name"
+        scratch_template="$cpp_template"
+        scratch_file="main.cc";;
+    "--rust")
+        scratch_dir="$rust_scratch_dir/$scratch_name"
+        scratch_eval="cargo init; scratch_dir="
+        scratch_template=""
+        scratch_file="/dev/null";;
+    *)
+        echo "error: unknown option $1"
+        display_help
+        exit 1;;
 esac
+
+mkdir "$scratch_dir" || (cd "$scratch_dir"; $SHELL)
+
+cd "$scratch_dir"
+[ "$scratch_eval" != "" ] && eval "$scratch_eval"
+echo -e "$scratch_template" > "$scratch_dir/$scratch_file"
+$SHELL
