@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+[ -f "$(command -v termux-notification-list)" ] &&
+    (termux-notification-list | grep -Eq "\(wake lock held\)" || termux-wake-lock >/dev/null 2>&1 &)

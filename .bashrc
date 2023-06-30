@@ -92,7 +92,7 @@ fi
 # Run if Termux
 if [ -n "$TERMUX_VERSION" ]; then
     if [ -f ~/.termux ]; then
-        . ~/.termux
+        . ~/.termuxrc
     fi
 else
     # Add sbin directories to PATH.  This is useful on systems that have sudo
