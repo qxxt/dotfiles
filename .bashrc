@@ -126,11 +126,6 @@ xterm* | rxvt*)
 *) ;;
 esac
 
-mkcdir() {
-    mkdir -p -- "$1" &&
-        cd -P -- "$1"
-}
-
 # Termux
 if [[ -n "$TERMUX_VERSION" ]]; then
     ISTERMUX=true

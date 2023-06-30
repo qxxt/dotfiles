@@ -16,6 +16,7 @@ files_to_link=(
     "bin/de"
     "bin/prompt"
     "bin/scratch"
+    "bin/mkcdir"
 )
 
 for f in "${files_to_link[@]}"; do
