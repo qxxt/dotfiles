@@ -1,12 +1,15 @@
+#!/usr/bin/env bash
+
 # ls aliases
-alias ls='ls --group-directories-first --color=auto --time-style=long-iso -Fhv1'
+alias ls='ls --color=auto --group-directories-first --time-style=long-iso -Fhv1'
 alias l='ls -AgG'
 alias ll='ls -Al'
-# Sort by size
-alias lt='ls -AsS1'
-# Sort by time
-# alias ltime='l -t'
 
+# Sort by size
+alias lsize='ls -AsS1'
+
+# Sort by time
+alias ltime='l -t'
 
 # Copy with progress bar
 alias cpv='rsync -ah --info=progress2'
