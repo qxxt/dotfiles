@@ -1,11 +1,16 @@
-#!/bin/bash
-
+#!/usr/sbin/env bash
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
+
+# Disable caching recent files
+if [ -s ~/.local/share/recently-used.xbel ]; then
+    echo '' > ~/.local/share/recently-used.xbel
+    chmod 0444 ~/.local/share/recently-used.xbel
+fi
 
 # don't put duplicate lines in the history. See bash(1) for more options
 # don't overwrite GNU Midnight Commander's setting of `ignorespace'.
