@@ -28,14 +28,12 @@ for f in "${files_to_link[@]}"; do
     fi
 
     if [ -e "$dst" ]; then
-        if [ `readlink $dst` == "$src" ]; then
+        if [ "$(readlink $dst)" == "$src" ]; then
             echo "'$dst' already linked to '$src'"
-            continue
         elif prompt "force replace '$dst' with '$src'?"; then
             ln -sf "$src" "$dst"
             echo "force linked '$src' to '$dst'"
         fi
-
         continue
     fi
 
