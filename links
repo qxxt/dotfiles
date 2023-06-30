@@ -4,6 +4,8 @@ dotfile_directory=$(realpath $(dirname -- $0))
 target_directory=$HOME
 
 files_to_link=(
+    "project.org"
+    "installed.org"
     ".bashrc"
     ".bash_aliases"
     ".gemrc"
