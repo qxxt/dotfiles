@@ -143,3 +143,7 @@ export PATH="$PATH:$GOBIN:$HOME/bin"
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
+
+# Disable stupid dialog on Gnome
+[ -n "$SSH_CONNECTION" ] && unset SSH_ASKPASS
+export GIT_ASKPASS=
