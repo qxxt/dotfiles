@@ -41,6 +41,15 @@ else
     PS1="\[\e[1;32m\]\w\[\e[0m\] $ "
 fi
 
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;\w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
