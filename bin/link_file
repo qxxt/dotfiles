@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+if [ "$(echo -n "$1" | head -c 1)" = "/" ]; then
+    src=$1
+else
+    src=$PWD/$1
+fi
+
+if [ "$(echo -n "$2" | head -c 1)" = "/" ]; then
+    dst=$2
+else
+    dst=$PWD/$2
+fi
+
+if [ -e "$dst" ]; then
+    if [ "$(readlink $dst)" == "$src" ]; then
+        echo "'$dst' already linked to '$src'"
+    elif ./bin/prompt "force replace '$dst' with '$src'?"; then
+        ln -sf "$src" "$dst" || echo "error: unable to link '$src' to '$dst'"; exit 1
+        echo "force linked '$src' to '$dst'"
+    fi
+
+    exit 0
+fi
+
+ln -s "$src" "$dst" || echo "error: unable to link '$src' to '$dst'"; exit 1
+echo "linked: '$src' to '$dst'"

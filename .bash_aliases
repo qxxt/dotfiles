@@ -19,6 +19,12 @@ alias tour="tour -openbrowser=f"
 alias godoc="GOROOT=/usr/local/go godoc"
 
 # Emacs
-alias emacs="emacs --maximized"
+alias et="emacsclient"
+alias ec="emacsclient -c"
+alias er="emacsclient -r"
 
 alias reboot="prompt reboot now? && reboot"
+
+alias sbcl="rlwrap sbcl"
+
+alias python="python3"

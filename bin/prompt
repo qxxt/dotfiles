@@ -2,4 +2,4 @@
 
 echo -n $@ "(y or yes to confirm): "
 read "x"
-[ $x == 'y' ] || [ $x == 'yes' ] && exit 0 || exit 1
+[ "$x" = "y" ] || [ "$x" = "yes" ] && exit 0 || exit 1

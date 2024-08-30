@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+rclone mount k:/kdbx ~/k/kp --daemon && bisync ~/k/kp ~/k/kp-bak

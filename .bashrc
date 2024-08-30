@@ -7,8 +7,12 @@
 [ -z "$PS1" ] && return
 
 # Disable caching recent files
-if [ -s ~/.local/share/recently-used.xbel ]; then
-    echo '' > ~/.local/share/recently-used.xbel
+if [ ! -e ~/.local/share/recently-used.xbel ]; then
+    touch ~/.local/share/recently-used.xbel
+    chmod 0444 ~/.local/share/recently-used.xbel
+elif [ -s ~/.local/share/recently-used.xbel ]; then
+    rm ~/.local/share/recently-used.xbel
+    touch ~/.local/share/recently-used.xbel
     chmod 0444 ~/.local/share/recently-used.xbel
 fi
 
@@ -82,33 +86,29 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
+# Local bin
+export PATH="$PATH:$HOME/bin"
+
+# Go
 # Go env
 export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
 export PATH="$PATH:$GOBIN"
 
-# Local bin
-export PATH="$PATH:$HOME/bin"
-
+# Rust
+[[ -f ~/.cargo/env ]] && . ~/.cargo/env
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
 
-# Rust
-if [ -f ~/.cargo/env ]; then
-    . ~/.cargo/env
-fi
-
 # Run if Termux
-if [ -n "$TERMUX_VERSION" ]; then
-    if [ -f ~/.termux ]; then
-        . ~/.termuxrc
-    fi
+if [[ -n "$TERMUX_VERSION" ]]; then
+    [[ -f ~/.termux ]] && . ~/.termuxrc
 else
     # Add sbin directories to PATH.  This is useful on systems that have sudo
     echo $PATH | grep -Eq "(^|:)/sbin(:|)" || PATH=$PATH:/sbin
     echo $PATH | grep -Eq "(^|:)/usr/sbin(:|)" || PATH=$PATH:/usr/sbin
 
     # Disable stupid dialog on Gnome
-    [ -n "$SSH_CONNECTION" ] && unset SSH_ASKPASS
+    [[ -n "$SSH_CONNECTION" ]] && unset SSH_ASKPASS
     export GIT_ASKPASS=
 fi

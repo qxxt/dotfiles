@@ -1,9 +1,6 @@
-[user]
-    name = qxxt
-    email = 57898942+qxxt@users.noreply.github.com
-
 [core]
     pager = delta
+        compression = 0
 
 [interactive]
     diffFilter = delta --color-only
