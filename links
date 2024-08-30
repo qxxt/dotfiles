@@ -1,45 +1,50 @@
 #!/usr/bin/env bash
 
-dotfile_directory=$(realpath $(dirname -- $0))
-target_directory=$HOME
+cd $(realpath $(dirname -- $0))
 
-files_to_link=(
-    "project.org"
-    "installed.org"
-    ".bashrc"
-    ".bash_aliases"
-    ".gemrc"
-    ".gitconfig"
-    ".emacs.d/init.el"
-    ".emacs.d/early-init.el"
-    ".emacs.d/lisp"
-    ".emacs.d/snippets"
-    "bin/en"
-    "bin/de"
-    "bin/prompt"
-    "bin/scratch"
-    "bin/mkcdir"
-)
+set -- \
+    "project.org" \
+    "installed.org" \
+    ".bashrc" \
+    ".bash_aliases" \
+    ".gemrc" \
+    ".gitconfig" \
+    ".emacs.d/init.el" \
+    ".emacs.d/early-init.el" \
+    ".emacs.d/KEYBINDING.org" \
+    ".emacs.d/init-lisp/" \
+    ".emacs.d/tool-lisp/" \
+    ".emacs.d/snippets/" \
+    "bin/" \
 
-for f in "${files_to_link[@]}"; do
-    src=$dotfile_directory/$f
-    dst=$target_directory/$f
-
-    if [ ! -e "$src" ]; then
-        echo "error: '$src' does not exist"
-        continue
+for v in "$@"; do
+    if [ ! -e "$v" ]; then
+        echo "error: '$PWD/$v' does not exist"
+        return 1
     fi
 
-    if [ -e "$dst" ]; then
-        if [ "$(readlink $dst)" == "$src" ]; then
-            echo "'$dst' already linked to '$src'"
-        elif prompt "force replace '$dst' with '$src'?"; then
-            ln -sf "$src" "$dst"
-            echo "force linked '$src' to '$dst'"
+    if [ -d "$v" ]; then
+        if [ ! -e "$HOME/$v" ]; then
+            mkdir -p "$HOME/$v" || echo "error: unable to make dir '$HOME/$v'"; return 1
         fi
-        continue
-    fi
 
-    ln -s "$src" "$dst"
-    echo "linked: '$src' to '$dst'"
+        for v2 in "$v"*; do
+            if [ -f "$v2" ]; then
+                suf="$(echo -n $v2 | tail -c 1)"
+                # Ignore backup files; prefix ’#’ or suffix ’~’
+                if [ suf = "#" ] || [ suf = "~" ]; then
+                    continue
+                fi
+
+                ./bin/link_file "$PWD/$v2" "$HOME/$v2"
+            fi
+        done
+
+    else
+        if [ ! -e "$HOME/$(dirname $v)" ]; then
+            mkdir -p "$HOME/$(dirname $v)" || echo "error: unable to make dir '$HOME/$(dirname $v)'"; return 1
+        fi
+
+        ./bin/link_file "$PWD/$v" "$HOME/$v"
+    fi
 done
